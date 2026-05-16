@@ -1,0 +1,2289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Portfolio of Venil Kukadiya, MSc Data and Computer Science at Heidelberg University, focused on data analytics, software projects, dashboards, and scalable data infrastructure." />
+  <title>Venil Kukadiya | Data Analytics Portfolio</title>
+  <style>
+    :root {
+      --bg: #080b12;
+      --bg-2: #0d1320;
+      --surface: rgba(17, 24, 39, 0.84);
+      --surface-2: rgba(22, 31, 48, 0.92);
+      --surface-3: #111827;
+      --line: rgba(148, 163, 184, 0.2);
+      --line-strong: rgba(148, 163, 184, 0.34);
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --soft: #94a3b8;
+      --blue: #60a5fa;
+      --cyan: #22d3ee;
+      --teal: #2dd4bf;
+      --amber: #f59e0b;
+      --green: #22c55e;
+      --danger: #fb7185;
+      --radius: 18px;
+      --radius-sm: 12px;
+      --shadow: 0 24px 90px rgba(0, 0, 0, 0.42);
+      --font: Inter, Aptos, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --max: 1180px;
+      color-scheme: dark;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 96px;
+      overflow-x: hidden;
+      background: var(--bg);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(96, 165, 250, 0.18), transparent 30%),
+        radial-gradient(circle at 82% 0%, rgba(45, 212, 191, 0.13), transparent 28%),
+        linear-gradient(145deg, var(--bg) 0%, var(--bg-2) 52%, #07101a 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.18;
+      background-image:
+        linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.07) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent 82%);
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+      mix-blend-mode: screen;
+    }
+
+    ::selection {
+      background: rgba(34, 211, 238, 0.28);
+    }
+
+    ::-webkit-scrollbar {
+      width: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #070a11;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      border: 3px solid #070a11;
+      border-radius: 10px;
+      background: linear-gradient(180deg, var(--blue), var(--teal), var(--amber));
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      border: 0;
+      color: inherit;
+      font: inherit;
+    }
+
+    .bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.72;
+    }
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: grid;
+      place-items: center;
+      background: #070a11;
+      pointer-events: none;
+      animation: loaderAutoHide 700ms ease 2s forwards;
+      transition: opacity 600ms ease, visibility 600ms ease;
+    }
+
+    .loader.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-box {
+      width: min(320px, calc(100vw - 48px));
+      display: grid;
+      gap: 18px;
+      text-align: center;
+    }
+
+    .loader-mark {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      border: 1px solid rgba(148, 163, 184, 0.32);
+      background: linear-gradient(145deg, rgba(96, 165, 250, 0.24), rgba(45, 212, 191, 0.12));
+      font-weight: 900;
+      letter-spacing: 0;
+      box-shadow: 0 20px 70px rgba(34, 211, 238, 0.16);
+      animation: loaderLift 1200ms ease-in-out infinite alternate;
+    }
+
+    .loader-track {
+      height: 4px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.18);
+    }
+
+    .loader-track span {
+      display: block;
+      width: 100%;
+      height: 100%;
+      transform-origin: left;
+      background: linear-gradient(90deg, var(--blue), var(--cyan), var(--teal), var(--amber));
+      animation: load 1.8s ease forwards;
+    }
+
+    @keyframes loaderLift {
+      from { transform: translateY(0); }
+      to { transform: translateY(-8px); }
+    }
+
+    @keyframes load {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+
+    @keyframes loaderAutoHide {
+      to {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+
+    .page {
+      position: relative;
+      z-index: 2;
+    }
+
+    .site-nav {
+      position: fixed;
+      z-index: 100;
+      inset: 18px 18px auto;
+      display: flex;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .nav-inner {
+      width: min(var(--max), calc(100vw - 36px));
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: rgba(8, 13, 24, 0.78);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 16px 54px rgba(0, 0, 0, 0.35);
+      pointer-events: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      font-weight: 850;
+      order: 1;
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background:
+        linear-gradient(145deg, rgba(34, 211, 238, 0.88), rgba(96, 165, 250, 0.94)),
+        #0b1220;
+      color: #06111f;
+      box-shadow: 0 16px 42px rgba(34, 211, 238, 0.22);
+    }
+
+    .brand-name {
+      white-space: nowrap;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: clamp(12px, 2vw, 26px);
+      color: var(--muted);
+      font-size: 0.94rem;
+      font-weight: 650;
+      order: 2;
+    }
+
+    .nav-link {
+      position: relative;
+      padding: 9px 0;
+      white-space: nowrap;
+      transition: color 180ms ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 3px;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--blue), var(--teal), var(--amber));
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 220ms ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.is-active {
+      color: var(--text);
+    }
+
+    .nav-link:hover::after,
+    .nav-link.is-active::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      order: 3;
+    }
+
+    .lang-toggle {
+      min-width: 96px;
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid rgba(34, 211, 238, 0.36);
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.76);
+      color: var(--text);
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .lang-toggle:hover {
+      transform: translateY(-2px);
+      border-color: rgba(45, 212, 191, 0.72);
+      background: rgba(17, 24, 39, 0.98);
+    }
+
+    .section,
+    .hero {
+      width: min(var(--max), calc(100vw - 44px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      min-height: 100svh;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(420px, 0.86fr);
+      gap: clamp(44px, 6vw, 88px);
+      align-items: center;
+      padding: 130px 0 90px;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 0 18px;
+      color: var(--cyan);
+      font-size: 0.78rem;
+      font-weight: 850;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 38px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--cyan), transparent);
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1,
+    h2,
+    h3 {
+      letter-spacing: -0.045em;
+    }
+
+    .hero h1 {
+      max-width: 760px;
+      font-size: clamp(4rem, 7vw, 6.7rem);
+      line-height: 0.9;
+      font-weight: 900;
+    }
+
+    .gradient-text {
+      color: transparent;
+      background: linear-gradient(115deg, #ffffff 0%, #dbeafe 20%, var(--cyan) 48%, #bfdbfe 70%, #ffffff 100%);
+      background-size: 180% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: textFlow 8s linear infinite;
+    }
+
+    @keyframes textFlow {
+      from { background-position: 180% center; }
+      to { background-position: 0% center; }
+    }
+
+    .hero-lede {
+      max-width: 660px;
+      margin-top: 26px;
+      color: var(--muted);
+      font-size: clamp(1.08rem, 1.6vw, 1.28rem);
+      line-height: 1.72;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 26px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 36px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.72);
+      color: var(--muted);
+      font-size: 0.92rem;
+      font-weight: 650;
+      line-height: 1.2;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 34px;
+    }
+
+    .button {
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 1px solid var(--line-strong);
+      background: rgba(15, 23, 42, 0.74);
+      color: var(--text);
+      font-weight: 800;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+    }
+
+    .button.primary {
+      border: 0;
+      color: #06111f;
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
+      box-shadow: 0 18px 45px rgba(34, 211, 238, 0.18);
+    }
+
+    .button:hover {
+      transform: translateY(-3px);
+      border-color: rgba(34, 211, 238, 0.6);
+      background: rgba(30, 41, 59, 0.94);
+    }
+
+    .button.primary:hover {
+      background: linear-gradient(135deg, #67e8f9, #5eead4);
+      box-shadow: 0 22px 58px rgba(34, 211, 238, 0.26);
+    }
+
+    .quick-stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      width: min(var(--max), calc(100vw - 44px));
+      margin: -40px auto 0;
+      position: relative;
+      z-index: 3;
+    }
+
+    .stat {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: rgba(15, 23, 42, 0.82);
+      box-shadow: 0 18px 54px rgba(0, 0, 0, 0.22);
+    }
+
+    .stat strong {
+      display: block;
+      color: var(--text);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      letter-spacing: -0.045em;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 8px;
+      color: var(--soft);
+      line-height: 1.45;
+      font-size: 0.94rem;
+    }
+
+    .architecture-card {
+      min-height: 650px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(150deg, rgba(30, 41, 59, 0.74), rgba(15, 23, 42, 0.88)),
+        var(--surface);
+      box-shadow: var(--shadow);
+      perspective: 1200px;
+      overflow: hidden;
+    }
+
+    .architecture-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: start;
+      margin-bottom: 20px;
+    }
+
+    .architecture-header h2 {
+      font-size: clamp(1.2rem, 2vw, 1.45rem);
+      line-height: 1.1;
+    }
+
+    .architecture-header p {
+      margin-top: 8px;
+      color: var(--soft);
+      line-height: 1.55;
+      font-size: 0.95rem;
+    }
+
+    .status-dot {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+      color: var(--teal);
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .status-dot::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--teal);
+      box-shadow: 0 0 20px rgba(45, 212, 191, 0.75);
+    }
+
+    .architecture-stage {
+      position: relative;
+      height: 370px;
+      margin: 20px 0 20px;
+      transform-style: preserve-3d;
+      transition: transform 220ms ease;
+    }
+
+    .grid-plane {
+      position: absolute;
+      inset: 28px;
+      border: 1px solid rgba(96, 165, 250, 0.22);
+      border-radius: 22px;
+      background:
+        linear-gradient(rgba(96, 165, 250, 0.16) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(96, 165, 250, 0.16) 1px, transparent 1px),
+        radial-gradient(circle at 50% 50%, rgba(34, 211, 238, 0.16), transparent 50%);
+      background-size: 34px 34px, 34px 34px, 100% 100%;
+      transform: perspective(760px) rotateX(64deg) rotateZ(-28deg) translateY(42px) scale(0.92);
+      box-shadow: inset 0 0 60px rgba(34, 211, 238, 0.08);
+    }
+
+    .stack-shadow {
+      position: absolute;
+      inset: 52px 42px 34px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.1), rgba(96, 165, 250, 0.02));
+      transform: perspective(760px) rotateX(64deg) rotateZ(-28deg) translateY(58px) scale(0.82);
+      filter: blur(8px);
+    }
+
+    .connection {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: var(--w);
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(34, 211, 238, 0.04), rgba(34, 211, 238, 0.58), rgba(245, 158, 11, 0.44));
+      transform: rotate(var(--r));
+      transform-origin: left center;
+    }
+
+    .module {
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      min-width: 128px;
+      min-height: 82px;
+      display: grid;
+      place-items: center;
+      padding: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      border-radius: 16px;
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.92), rgba(15, 23, 42, 0.94));
+      box-shadow: 0 22px 70px rgba(0, 0, 0, 0.34);
+      transform: translate(-50%, -50%) translateY(calc(var(--z) * -0.035));
+      z-index: 3;
+      cursor: pointer;
+      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+    }
+
+    .module span {
+      display: block;
+      color: var(--text);
+      font-size: 0.86rem;
+      font-weight: 850;
+      line-height: 1.2;
+      text-align: center;
+    }
+
+    .module small {
+      display: block;
+      margin-top: 6px;
+      color: var(--soft);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .module.core {
+      min-width: 156px;
+      min-height: 106px;
+      border-color: rgba(34, 211, 238, 0.52);
+      background: linear-gradient(145deg, rgba(14, 165, 233, 0.3), rgba(15, 23, 42, 0.98));
+      z-index: 4;
+    }
+
+    .module:hover,
+    .module.is-active {
+      transform: translate(-50%, -50%) translateY(calc(var(--z) * -0.035 - 8px));
+      border-color: rgba(45, 212, 191, 0.78);
+      box-shadow: 0 28px 84px rgba(34, 211, 238, 0.18);
+      background: linear-gradient(145deg, rgba(30, 64, 175, 0.58), rgba(15, 23, 42, 0.98));
+      z-index: 6;
+    }
+
+    .architecture-insight {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: center;
+      padding: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: var(--radius-sm);
+      background: rgba(8, 13, 24, 0.72);
+    }
+
+    .explore-controls {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      margin: 0 0 14px;
+    }
+
+    .explore-chip {
+      min-height: 38px;
+      padding: 8px 10px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.72);
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 180ms ease, border-color 180ms ease, color 180ms ease, background 180ms ease;
+    }
+
+    .explore-chip:hover,
+    .explore-chip.is-active {
+      transform: translateY(-2px);
+      border-color: rgba(34, 211, 238, 0.66);
+      background: rgba(30, 41, 59, 0.96);
+      color: var(--text);
+    }
+
+    .explore-chip.is-active {
+      box-shadow: inset 0 0 0 1px rgba(34, 211, 238, 0.18);
+    }
+
+    .architecture-insight h3 {
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+    }
+
+    .architecture-insight p {
+      color: var(--muted);
+      line-height: 1.62;
+      font-size: 0.95rem;
+    }
+
+    .insight-count {
+      display: grid;
+      place-items: center;
+      width: 72px;
+      height: 72px;
+      border-radius: 16px;
+      background: linear-gradient(145deg, rgba(34, 211, 238, 0.16), rgba(45, 212, 191, 0.08));
+      color: var(--cyan);
+      font-size: 1.35rem;
+      font-weight: 900;
+    }
+
+    .section {
+      padding: clamp(78px, 9vw, 120px) 0;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(280px, 0.62fr);
+      gap: clamp(28px, 5vw, 70px);
+      align-items: end;
+      margin-bottom: 34px;
+    }
+
+    .section h2 {
+      max-width: 720px;
+      font-size: clamp(2.3rem, 4.4vw, 4.1rem);
+      line-height: 0.98;
+      font-weight: 900;
+    }
+
+    .section-copy {
+      color: var(--muted);
+      line-height: 1.74;
+      font-size: 1rem;
+    }
+
+    .profile-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.84fr) minmax(0, 1.16fr);
+      gap: 18px;
+    }
+
+    .panel,
+    .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: 0 20px 66px rgba(0, 0, 0, 0.22);
+    }
+
+    .panel {
+      padding: clamp(24px, 3vw, 34px);
+    }
+
+    .profile-text {
+      color: var(--muted);
+      font-size: 1.04rem;
+      line-height: 1.82;
+    }
+
+    .focus-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .focus-card {
+      padding: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: var(--radius-sm);
+      background: rgba(15, 23, 42, 0.66);
+    }
+
+    .focus-card h3 {
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    .focus-card p {
+      color: var(--soft);
+      line-height: 1.58;
+      font-size: 0.94rem;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .skill-card {
+      padding: 20px;
+      min-height: 252px;
+      transition: transform 200ms ease, border-color 200ms ease, background 200ms ease;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(34, 211, 238, 0.38);
+      background: rgba(17, 24, 39, 0.96);
+    }
+
+    .skill-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .skill-top h3 {
+      font-size: 1.08rem;
+      line-height: 1.2;
+    }
+
+    .skill-top span {
+      color: var(--cyan);
+      font-weight: 900;
+    }
+
+    .bar {
+      height: 8px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.16);
+    }
+
+    .bar span {
+      display: block;
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--blue), var(--cyan), var(--teal));
+      transition: width 1000ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 7px 10px;
+      border: 1px solid rgba(148, 163, 184, 0.19);
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.72);
+      color: var(--muted);
+      font-size: 0.84rem;
+      font-weight: 680;
+      line-height: 1.2;
+    }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      gap: 18px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 19px;
+      top: 18px;
+      bottom: 18px;
+      width: 2px;
+      background: linear-gradient(var(--cyan), var(--blue), var(--amber));
+      opacity: 0.72;
+    }
+
+    .timeline-item {
+      position: relative;
+      display: grid;
+      grid-template-columns: 58px minmax(0, 1fr);
+      gap: 20px;
+    }
+
+    .timeline-node {
+      position: relative;
+      z-index: 2;
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(34, 211, 238, 0.44);
+      border-radius: 50%;
+      background: #08111f;
+      color: var(--cyan);
+      font-weight: 900;
+      box-shadow: 0 0 32px rgba(34, 211, 238, 0.14);
+    }
+
+    .experience-card {
+      padding: clamp(22px, 3vw, 32px);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 18px;
+    }
+
+    .card-header h3 {
+      font-size: clamp(1.24rem, 2.4vw, 1.75rem);
+      line-height: 1.16;
+    }
+
+    .company {
+      margin-top: 8px;
+      color: var(--cyan);
+      font-weight: 850;
+    }
+
+    .date {
+      color: var(--amber);
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    ul.clean-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.72;
+    }
+
+    .clean-list li + li {
+      margin-top: 10px;
+    }
+
+    .projects-grid,
+    .education-grid,
+    .cert-grid,
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .project-card,
+    .education-card,
+    .cert-card,
+    .contact-card,
+    .language-card {
+      padding: 22px;
+      transition: transform 200ms ease, border-color 200ms ease, background 200ms ease;
+    }
+
+    .project-card:hover,
+    .education-card:hover,
+    .cert-card:hover,
+    .contact-card:hover,
+    .language-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(45, 212, 191, 0.38);
+      background: rgba(17, 24, 39, 0.98);
+    }
+
+    .project-card h3,
+    .education-card h3,
+    .cert-card h3,
+    .contact-card h3,
+    .language-card h3 {
+      font-size: 1.18rem;
+      line-height: 1.22;
+      margin-bottom: 10px;
+    }
+
+    .project-card p,
+    .education-card p,
+    .cert-card p,
+    .contact-card p,
+    .language-card p {
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 0.96rem;
+    }
+
+    .project-card {
+      min-height: 390px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-type {
+      display: inline-flex;
+      width: fit-content;
+      margin-bottom: 18px;
+      color: var(--cyan);
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .link-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: auto;
+      padding-top: 18px;
+    }
+
+    .text-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid rgba(34, 211, 238, 0.24);
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.76);
+      color: var(--text);
+      font-size: 0.86rem;
+      font-weight: 800;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .text-link:hover {
+      transform: translateY(-2px);
+      border-color: rgba(34, 211, 238, 0.7);
+      background: rgba(30, 41, 59, 0.96);
+    }
+
+    .education-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .language-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .level {
+      display: inline-flex;
+      margin-top: 16px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(34, 211, 238, 0.12);
+      color: var(--cyan);
+      font-weight: 900;
+    }
+
+    .cert-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .cert-card {
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .contact-wrap {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.72fr) minmax(0, 1.28fr);
+      gap: 16px;
+    }
+
+    .contact-visual {
+      min-height: 360px;
+      position: relative;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .contact-visual::before,
+    .contact-visual::after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(34, 211, 238, 0.25);
+      border-radius: 50%;
+      animation: pulse 3.2s ease-out infinite;
+    }
+
+    .contact-visual::before {
+      width: 210px;
+      height: 210px;
+    }
+
+    .contact-visual::after {
+      width: 292px;
+      height: 292px;
+      animation-delay: 900ms;
+      border-color: rgba(96, 165, 250, 0.18);
+    }
+
+    @keyframes pulse {
+      from { transform: scale(0.76); opacity: 0.75; }
+      to { transform: scale(1.12); opacity: 0; }
+    }
+
+    .avatar {
+      position: relative;
+      z-index: 2;
+      width: 150px;
+      height: 150px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      border-radius: 28px;
+      background: linear-gradient(145deg, rgba(96, 165, 250, 0.9), rgba(45, 212, 191, 0.86));
+      color: #06111f;
+      font-size: 3rem;
+      font-weight: 900;
+      box-shadow: 0 30px 80px rgba(34, 211, 238, 0.16);
+      transform: rotate(-4deg);
+    }
+
+    .contact-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .footer {
+      position: relative;
+      z-index: 2;
+      width: min(var(--max), calc(100vw - 44px));
+      margin: 0 auto;
+      padding: 34px 0 54px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      color: var(--soft);
+      font-size: 0.94rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 650ms ease, transform 650ms ease;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1060px) {
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .architecture-card {
+        min-height: 600px;
+      }
+
+      .quick-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 0;
+      }
+
+      .profile-layout,
+      .contact-wrap,
+      .section-head {
+        grid-template-columns: 1fr;
+      }
+
+      .skills-grid,
+      .projects-grid,
+      .cert-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .brand-name {
+        display: none;
+      }
+
+      .nav-links {
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+
+      .nav-links::-webkit-scrollbar {
+        display: none;
+      }
+
+      .nav-link {
+        flex: 0 0 auto;
+      }
+    }
+
+    @media (max-width: 740px) {
+      html {
+        scroll-padding-top: 176px;
+      }
+
+      .site-nav {
+        inset: 10px 10px auto;
+      }
+
+      .nav-inner {
+        width: calc(100vw - 20px);
+        min-height: 0;
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+      }
+
+      .brand {
+        flex: 0 0 auto;
+        order: 1;
+      }
+
+      .nav-actions {
+        position: static;
+        flex: 0 0 auto;
+        margin-left: 8px;
+        order: 2;
+      }
+
+      .brand-mark {
+        width: 36px;
+        height: 36px;
+      }
+
+      .nav-links {
+        order: 3;
+        flex: 1 0 100%;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        min-width: 0;
+        max-width: none;
+        gap: 2px 8px;
+        overflow: visible;
+        font-size: 0.78rem;
+        margin-top: 8px;
+        padding: 0;
+      }
+
+      .nav-links .lang-toggle {
+        grid-column: 1 / -1;
+        justify-self: center;
+        margin-top: 4px;
+      }
+
+      .nav-link {
+        padding: 6px 0;
+        text-align: center;
+      }
+
+      .lang-toggle {
+        min-width: 54px;
+        width: 54px;
+        min-height: 36px;
+        padding: 0 10px;
+        font-size: 0.82rem;
+      }
+
+      .lang-toggle .lang-full {
+        display: none;
+      }
+
+      .section,
+      .hero,
+      .quick-stats,
+      .footer {
+        width: calc(100vw - 36px);
+      }
+
+      .hero {
+        padding: 234px 0 58px;
+        gap: 32px;
+      }
+
+      .hero h1 {
+        font-size: clamp(3.05rem, 16vw, 4.25rem);
+      }
+
+      .hero-lede {
+        max-width: 34ch;
+        font-size: 1rem;
+        line-height: 1.66;
+      }
+
+      .cta-row,
+      .hero-meta {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .button,
+      .pill {
+        width: 100%;
+      }
+
+      .quick-stats,
+      .focus-grid,
+      .skills-grid,
+      .projects-grid,
+      .education-grid,
+      .language-grid,
+      .cert-grid,
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .architecture-card {
+        min-height: auto;
+        padding: 18px;
+      }
+
+      .architecture-header,
+      .architecture-insight,
+      .card-header {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+      }
+
+      .architecture-stage {
+        height: 470px;
+        margin: 12px 0 18px;
+        transform: none !important;
+      }
+
+      .grid-plane,
+      .stack-shadow,
+      .connection {
+        display: none;
+      }
+
+      .module,
+      .module.core,
+      .module:hover,
+      .module.is-active {
+        position: relative;
+        left: auto;
+        top: auto;
+        min-width: 0;
+        width: 100%;
+        min-height: 72px;
+        margin-bottom: 10px;
+        transform: none;
+      }
+
+      .architecture-stage {
+        display: grid;
+        align-content: start;
+      }
+
+      .explore-controls {
+        grid-template-columns: 1fr;
+      }
+
+      .insight-count {
+        width: 56px;
+        height: 56px;
+      }
+
+      .section {
+        padding: 72px 0;
+      }
+
+      .section h2 {
+        font-size: clamp(2.05rem, 11vw, 3rem);
+        max-width: 11ch;
+      }
+
+      .section-copy,
+      .profile-text,
+      .clean-list,
+      .project-card p,
+      .education-card p,
+      .cert-card p,
+      .contact-card p,
+      .language-card p,
+      .focus-card p {
+        max-width: 34ch;
+        overflow-wrap: break-word;
+      }
+
+      .card,
+      .panel,
+      .project-card,
+      .education-card,
+      .cert-card,
+      .contact-card,
+      .language-card {
+        padding: 20px;
+      }
+
+      .timeline::before {
+        left: 16px;
+      }
+
+      .timeline-item {
+        grid-template-columns: 42px minmax(0, 1fr);
+        gap: 8px;
+      }
+
+      .timeline-node {
+        width: 34px;
+        height: 34px;
+        font-size: 0.82rem;
+      }
+
+      .date {
+        white-space: normal;
+      }
+
+      .chip-row {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .chip,
+      .text-link {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .project-card {
+        min-height: auto;
+      }
+
+      .footer {
+        flex-direction: column;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="loader" aria-hidden="true">
+    <div class="loader-box">
+      <div class="loader-mark">VK</div>
+      <div class="loader-track"><span></span></div>
+    </div>
+  </div>
+
+  <canvas class="bg-canvas" id="bgCanvas" aria-hidden="true"></canvas>
+
+  <nav class="site-nav" aria-label="Primary navigation">
+    <div class="nav-inner">
+      <a class="brand" href="#home" aria-label="Venil Kukadiya">
+        <span class="brand-mark">VK</span>
+        <span class="brand-name">Venil Kukadiya</span>
+      </a>
+      <div class="nav-links" aria-label="Sections">
+        <a class="nav-link" href="#profile" data-i18n="nav.profile">Profile</a>
+        <a class="nav-link" href="#skills" data-i18n="nav.skills">Skills</a>
+        <a class="nav-link" href="#experience" data-i18n="nav.experience">Experience</a>
+        <a class="nav-link" href="#projects" data-i18n="nav.projects">Projects</a>
+        <a class="nav-link" href="#education" data-i18n="nav.education">Education</a>
+        <a class="nav-link" href="#contact" data-i18n="nav.contact">Contact</a>
+        <button class="lang-toggle" id="languageToggle" type="button" aria-pressed="false">
+          <span class="lang-short">DE</span>
+          <span class="lang-full" data-i18n="nav.lang">Deutsch</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="page">
+    <section class="hero" id="home">
+      <div class="hero-copy reveal">
+        <p class="eyebrow" data-i18n="hero.eyebrow">MSc Data and Computer Science</p>
+        <h1><span class="gradient-text">Venil<br />Kukadiya</span></h1>
+        <p class="hero-lede" data-i18n="hero.lede">MSc Data and Computer Science at Heidelberg University, focused on analytics pipelines, forecasting models, Power BI dashboards, and scalable data infrastructure for operational decision-making.</p>
+        <div class="hero-meta">
+          <span class="pill" data-i18n="hero.location">Sandhausen, Germany</span>
+          <span class="pill" data-i18n="hero.role">MSc Data and Computer Science</span>
+          <span class="pill" data-i18n="hero.languages">English · German B1-B2 · Hindi</span>
+        </div>
+        <div class="cta-row">
+          <a class="button primary" href="#projects" data-i18n="hero.ctaProjects">Explore projects</a>
+          <a class="button" href="mailto:venilkukadiya52wr@gmail.com" data-i18n="hero.ctaEmail">Email me</a>
+          <a class="button" href="https://www.linkedin.com/in/venil-kukadiya502/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a class="button" href="https://github.com/venilkukadiya52" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+      </div>
+
+      <aside class="architecture-card reveal" id="architectureCard" aria-label="Interactive data architecture">
+        <div class="architecture-header">
+          <div>
+            <p class="eyebrow" data-i18n="architecture.eyebrow">Interactive 3D structure</p>
+            <h2 data-i18n="architecture.title">Explore the analytics system</h2>
+            <p data-i18n="architecture.copy">Click a module to see how my resume skills connect across data ingestion, processing, modeling, and decision dashboards.</p>
+          </div>
+          <span class="status-dot" data-i18n="architecture.status">Live</span>
+        </div>
+        <div class="architecture-stage" id="architectureStage">
+          <div class="stack-shadow"></div>
+          <div class="grid-plane"></div>
+          <span class="connection" style="--w: 180px; --r: 16deg;"></span>
+          <span class="connection" style="--w: 165px; --r: 108deg;"></span>
+          <span class="connection" style="--w: 175px; --r: 205deg;"></span>
+          <span class="connection" style="--w: 155px; --r: 292deg;"></span>
+          <button class="module core is-active" type="button" data-node="core" style="--x: 50%; --y: 47%; --z: 72px;">
+            <span data-i18n="architecture.nodeCore">Data Core</span>
+            <small data-i18n="architecture.nodeCoreSub">Databricks · SQL</small>
+          </button>
+          <button class="module" type="button" data-node="ingest" style="--x: 16%; --y: 50%; --z: 42px;">
+            <span data-i18n="architecture.nodeIngest">Ingestion</span>
+            <small data-i18n="architecture.nodeIngestSub">ETL · migration</small>
+          </button>
+          <button class="module" type="button" data-node="model" style="--x: 50%; --y: 15%; --z: 58px;">
+            <span data-i18n="architecture.nodeModel">Modeling</span>
+            <small data-i18n="architecture.nodeModelSub">ML · forecasting</small>
+          </button>
+          <button class="module" type="button" data-node="dashboard" style="--x: 84%; --y: 50%; --z: 48px;">
+            <span data-i18n="architecture.nodeDashboard">Dashboards</span>
+            <small data-i18n="architecture.nodeDashboardSub">Power BI · KPI</small>
+          </button>
+          <button class="module" type="button" data-node="automation" style="--x: 50%; --y: 82%; --z: 36px;">
+            <span data-i18n="architecture.nodeAutomation">Automation</span>
+            <small data-i18n="architecture.nodeAutomationSub">PySpark · Azure</small>
+          </button>
+        </div>
+        <div class="explore-controls" aria-label="Explore architecture modules">
+          <button class="explore-chip is-active" type="button" data-node="core" data-i18n="architecture.nodeCore">Data Core</button>
+          <button class="explore-chip" type="button" data-node="ingest" data-i18n="architecture.nodeIngest">Ingestion</button>
+          <button class="explore-chip" type="button" data-node="model" data-i18n="architecture.nodeModel">Modeling</button>
+          <button class="explore-chip" type="button" data-node="dashboard" data-i18n="architecture.nodeDashboard">Dashboards</button>
+          <button class="explore-chip" type="button" data-node="automation" data-i18n="architecture.nodeAutomation">Automation</button>
+        </div>
+        <div class="architecture-insight">
+          <div>
+            <h3 id="insightTitle">Data Core</h3>
+            <p id="insightBody">Databricks, PySpark, Python, and SQL connect the portfolio: scalable pipelines, clean datasets, and reliable reporting foundations.</p>
+          </div>
+          <div class="insight-count" id="insightCount">01</div>
+        </div>
+      </aside>
+    </section>
+
+    <div class="quick-stats reveal" aria-label="Resume highlights">
+      <div class="stat"><strong>500K+</strong><span data-i18n="stats.records">records visualized in dashboard projects</span></div>
+      <div class="stat"><strong>60%</strong><span data-i18n="stats.reporting">faster report generation for stakeholders</span></div>
+      <div class="stat"><strong>35%</strong><span data-i18n="stats.automation">less manual processing through ETL automation</span></div>
+      <div class="stat"><strong>99.26%</strong><span data-i18n="stats.accuracy">CNN image classification accuracy</span></div>
+    </div>
+
+    <section class="section" id="profile">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow" data-i18n="profile.eyebrow">Profile</p>
+          <h2 data-i18n="profile.title">Analytics engineering for data-driven decisions.</h2>
+        </div>
+        <p class="section-copy" data-i18n="profile.copy">I turn large, complex datasets into reliable pipelines, statistical insight, and decision-ready dashboards for business and technical teams.</p>
+      </div>
+      <div class="profile-layout">
+        <article class="panel reveal">
+          <p class="profile-text" data-i18n="profile.text">MSc Data and Computer Science at Heidelberg University. Experienced in processing and analyzing large datasets, building data-driven models for evaluation and forecasting, and creating interactive dashboards with Databricks, PySpark, Python, SQL, and Microsoft Power BI. Interested in energy supply, high-voltage grid analytics, digitalization, and asset management.</p>
+        </article>
+        <div class="panel reveal">
+          <h3 data-i18n="profile.focusTitle">Core focus areas</h3>
+          <div class="focus-grid">
+            <article class="focus-card">
+              <h3 data-i18n="focus.engineeringTitle">Data engineering</h3>
+              <p data-i18n="focus.engineering">ETL design, PySpark, Databricks, migration, scalable data infrastructure, and documentation.</p>
+            </article>
+            <article class="focus-card">
+              <h3 data-i18n="focus.analyticsTitle">Analytics modeling</h3>
+              <p data-i18n="focus.analytics">Statistical analysis, mathematical modeling, forecasting, EDA, A/B testing, and predictive modeling.</p>
+            </article>
+            <article class="focus-card">
+              <h3 data-i18n="focus.visualTitle">Visualization</h3>
+              <p data-i18n="focus.visual">Power BI, Streamlit, KPI development, dashboards, and communicating complex relationships clearly.</p>
+            </article>
+            <article class="focus-card">
+              <h3 data-i18n="focus.cloudTitle">Cloud and databases</h3>
+              <p data-i18n="focus.cloud">Azure, AWS, MySQL, PostgreSQL, MongoDB, Azure SQL, SQL, and data integration.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="skills">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow" data-i18n="skills.eyebrow">Skills</p>
+          <h2 data-i18n="skills.title">A practical stack for analytics delivery.</h2>
+        </div>
+        <p class="section-copy" data-i18n="skills.copy">Skills are grouped by how they contribute to a production analytics workflow: moving data, modeling it, and communicating results.</p>
+      </div>
+      <div class="skills-grid">
+        <article class="card skill-card reveal" data-progress="94">
+          <div class="skill-top"><h3 data-i18n="skill.dataEngineering">Data engineering</h3><span>94%</span></div>
+          <div class="bar"><span></span></div>
+          <div class="chip-row">
+            <span class="chip">Databricks</span><span class="chip">PySpark</span><span class="chip">Python</span><span class="chip" data-i18n="chip.etl">ETL pipeline design</span><span class="chip" data-i18n="chip.bigData">Big data processing</span><span class="chip" data-i18n="chip.migration">Data migration</span><span class="chip" data-i18n="chip.documentation">Documentation</span>
+          </div>
+        </article>
+        <article class="card skill-card reveal" data-progress="91">
+          <div class="skill-top"><h3 data-i18n="skill.analytics">Analytics and modeling</h3><span>91%</span></div>
+          <div class="bar"><span></span></div>
+          <div class="chip-row">
+            <span class="chip" data-i18n="chip.stats">Statistical analysis</span><span class="chip" data-i18n="chip.math">Mathematical modeling</span><span class="chip" data-i18n="chip.forecasting">Forecasting</span><span class="chip" data-i18n="chip.ml">Machine learning</span><span class="chip">EDA</span><span class="chip">A/B Testing</span><span class="chip" data-i18n="chip.predictive">Predictive modeling</span>
+          </div>
+        </article>
+        <article class="card skill-card reveal" data-progress="93">
+          <div class="skill-top"><h3 data-i18n="skill.visualization">Visualization</h3><span>93%</span></div>
+          <div class="bar"><span></span></div>
+          <div class="chip-row">
+            <span class="chip">Power BI</span><span class="chip">Streamlit</span><span class="chip" data-i18n="chip.dashboards">Interactive dashboards</span><span class="chip">Matplotlib</span><span class="chip" data-i18n="chip.kpi">KPI development</span><span class="chip" data-i18n="chip.dataViz">Data visualization</span>
+          </div>
+        </article>
+        <article class="card skill-card reveal" data-progress="88">
+          <div class="skill-top"><h3 data-i18n="skill.cloud">Cloud and databases</h3><span>88%</span></div>
+          <div class="bar"><span></span></div>
+          <div class="chip-row">
+            <span class="chip">Azure</span><span class="chip">AWS</span><span class="chip">MySQL</span><span class="chip">PostgreSQL</span><span class="chip">MongoDB</span><span class="chip">Azure SQL</span><span class="chip">SQL</span>
+          </div>
+        </article>
+        <article class="card skill-card reveal" data-progress="90">
+          <div class="skill-top"><h3 data-i18n="skill.programming">Programming</h3><span>90%</span></div>
+          <div class="bar"><span></span></div>
+          <div class="chip-row">
+            <span class="chip">Pandas</span><span class="chip">NumPy</span><span class="chip">Scikit-Learn</span><span class="chip">TensorFlow</span><span class="chip">R</span><span class="chip">Java</span><span class="chip">C</span><span class="chip">C#</span><span class="chip">JavaScript</span>
+          </div>
+        </article>
+        <article class="card skill-card reveal" data-progress="86">
+          <div class="skill-top"><h3 data-i18n="skill.teaming">Documentation and teamwork</h3><span>86%</span></div>
+          <div class="bar"><span></span></div>
+          <div class="chip-row">
+            <span class="chip" data-i18n="chip.processDoc">Process documentation</span><span class="chip" data-i18n="chip.requirements">Requirements gathering</span><span class="chip" data-i18n="chip.validation">Validation</span><span class="chip" data-i18n="chip.maintainability">Maintainability</span><span class="chip" data-i18n="chip.interdisciplinary">Interdisciplinary teams</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="experience">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow" data-i18n="experience.eyebrow">Experience</p>
+          <h2 data-i18n="experience.title">Work that connects data, software, and decisions.</h2>
+        </div>
+      </div>
+      <div class="timeline">
+        <article class="timeline-item reveal">
+          <div class="timeline-node">01</div>
+          <div class="card experience-card">
+            <header class="card-header">
+              <div>
+                <h3 data-i18n="experience.role1">Data Analyst and Software Developer</h3>
+                <p class="company">SuccessoftInfotech · Surat, India</p>
+              </div>
+              <p class="date" data-i18n="experience.date1">Jun 2022 to Mar 2023</p>
+            </header>
+            <ul class="clean-list">
+              <li data-i18n="experience.bullet1a">Analyzed and processed large datasets from multiple internal and external sources using Python, PySpark, and SQL, building models for evaluation and forecasting.</li>
+              <li data-i18n="experience.bullet1b">Developed interactive Power BI dashboards that supported operational and strategic decision-making, reducing report generation time by 60%.</li>
+              <li data-i18n="experience.bullet1c">Automated and documented ETL pipelines on Databricks and Azure, improving maintainability and reducing manual processing effort by approximately 35%.</li>
+              <li data-i18n="experience.bullet1d">Standardized decentralized data sources into scalable infrastructure, cutting redundancy by 40% and improving reliable data availability.</li>
+              <li data-i18n="experience.bullet1e">Worked with interdisciplinary teams to validate results, gather requirements, and contribute digitalization and automation solutions.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="timeline-item reveal">
+          <div class="timeline-node">02</div>
+          <div class="card experience-card">
+            <header class="card-header">
+              <div>
+                <h3 data-i18n="experience.role2">Junior Software Developer Intern</h3>
+                <p class="company">UPSQODE · Surat, India</p>
+              </div>
+              <p class="date" data-i18n="experience.date2">Nov 2021 to May 2022</p>
+            </header>
+            <ul class="clean-list">
+              <li data-i18n="experience.bullet2a">Developed applications using JavaScript, PHP, and MySQL while supporting data pipeline automation and process documentation.</li>
+              <li data-i18n="experience.bullet2b">Analyzed large datasets with SQL and contributed to workflow automation, saving approximately 5 hours of manual processing effort per week.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="projects">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow" data-i18n="projects.eyebrow">Projects</p>
+          <h2 data-i18n="projects.title">Selected analytics and engineering work.</h2>
+        </div>
+        <p class="section-copy" data-i18n="projects.copy">Project links from the resume and recent GitHub work are preserved and grouped by outcome.</p>
+      </div>
+      <div class="projects-grid">
+        <article class="card project-card reveal">
+          <span class="project-type" data-i18n="projects.typeMedicalAi">Medical AI · university project</span>
+          <h3 data-i18n="projects.mriTitle">MRI Brain Tumor Detection</h3>
+          <p data-i18n="projects.mriCopy">Collaborative university project for detecting brain tumor regions in MRI images. The repository is structured around a Faster R-CNN pipeline with an EfficientNet-B3 feature pyramid backbone, Pascal VOC style annotations, EDA, evaluation, inference, and a Gradio demo interface.</p>
+          <div class="chip-row"><span class="chip">PyTorch</span><span class="chip">Faster R-CNN</span><span class="chip">EfficientNet-B3</span><span class="chip">Gradio</span></div>
+          <div class="link-row"><a class="text-link" href="https://github.com/VishalIndo/MRI-Brain-Tumor-Detection" target="_blank" rel="noreferrer" data-i18n="link.githubProject">GitHub project</a></div>
+        </article>
+        <article class="card project-card reveal">
+          <span class="project-type" data-i18n="projects.typeDashboard">Dashboard suite</span>
+          <h3 data-i18n="projects.powerTitle">Power BI analytics dashboards</h3>
+          <p data-i18n="projects.powerCopy">Built interactive dashboards across 500,000 plus records, supporting operational and strategic decisions through statistical analysis, standardized data sources, and clear KPI reporting.</p>
+          <div class="chip-row"><span class="chip">Power BI</span><span class="chip" data-i18n="chip.kpi">KPI development</span><span class="chip" data-i18n="chip.forecasting">Forecasting</span></div>
+          <div class="link-row">
+            <a class="text-link" href="https://app.powerbi.com/view?r=eyJrIjoiNzVhYTgxMjktZDBkYy00YzhhLTlhMWMtM2QxMTMzZjYzOGVlIiwidCI6IjhmMDE1YTY1LTNmZmMtNGE0YS05ZTEwLTFmY2Q4Y2IzNjU2MiJ9" target="_blank" rel="noreferrer">Amazon Prime Video</a>
+            <a class="text-link" href="https://app.powerbi.com/view?r=eyJrIjoiMjJlMWM2MzYtZTQyZi00YmYzLWE4NTgtNWVhMGNkNjY3MjQxIiwidCI6IjhmMDE1YTY1LTNmZmMtNGE0YS05ZTEwLTFmY2Q4Y2IzNjU2MiJ9&pageName=df585c884c9066cbf8af" target="_blank" rel="noreferrer">PwC Call Centre</a>
+            <a class="text-link" href="https://app.powerbi.com/view?r=eyJrIjoiM2U0YzZmOTQtYWJkZi00OTg1LTkyYjgtMjZmY2MzYTlmYWVkIiwidCI6IjhmMDE1YTY1LTNmZmMtNGE0YS05ZTEwLTFmY2Q4Y2IzNjU2MiJ9&pageName=ReportSection" target="_blank" rel="noreferrer">HR Analytics</a>
+            <a class="text-link" href="https://app.powerbi.com/view?r=eyJrIjoiYTM4NmZkYmUtNDgzMC00ZGQzLWI1OWEtMTRkODMyY2EwNTFmIiwidCI6IjhmMDE1YTY1LTNmZmMtNGE0YS05ZTEwLTFmY2Q4Y2IzNjU2MiJ9&pageName=ReportSectionae35fad3f0a5e75417c2" target="_blank" rel="noreferrer">Customer Churn</a>
+          </div>
+        </article>
+        <article class="card project-card reveal">
+          <span class="project-type" data-i18n="projects.typeCompute">Parallel computing</span>
+          <h3 data-i18n="projects.bfsTitle">BFS acceleration with UPMEM Processing-In-Memory</h3>
+          <p data-i18n="projects.bfsCopy">Developed a big data processing solution using parallel computation on UPMEM DPUs, demonstrating scalable infrastructure and optimization of complex algorithms for large datasets.</p>
+          <div class="chip-row"><span class="chip">UPMEM</span><span class="chip" data-i18n="chip.bigData">Big data processing</span><span class="chip" data-i18n="chip.algorithms">Algorithms</span></div>
+          <div class="link-row"><a class="text-link" href="https://github.com/venilkukadiya52/BFS-search-using-Upmem-" target="_blank" rel="noreferrer" data-i18n="link.githubProject">GitHub project</a></div>
+        </article>
+        <article class="card project-card reveal">
+          <span class="project-type" data-i18n="projects.typeHardware">Embedded hardware</span>
+          <h3 data-i18n="projects.fpgaTitle">FPGA-Based System with Xilinx Vitis</h3>
+          <p data-i18n="projects.fpgaCopy">Designed and benchmarked a MicroBlaze-based FPGA platform using Xilinx/Vitis tools. The project compares polled and interrupt-driven UART I/O, expands the system with AXI crossbar, AXI timer, DDR3 memory, cache, and computational kernel timing.</p>
+          <div class="chip-row"><span class="chip">FPGA</span><span class="chip">MicroBlaze</span><span class="chip">Vitis</span><span class="chip">AXI</span></div>
+          <div class="link-row"><a class="text-link" href="https://github.com/venilkukadiya52/FPGA-Based-System" target="_blank" rel="noreferrer" data-i18n="link.githubProject">GitHub project</a></div>
+        </article>
+        <article class="card project-card reveal">
+          <span class="project-type" data-i18n="projects.typeML">Machine learning</span>
+          <h3 data-i18n="projects.cnnTitle">CNN image classification model</h3>
+          <p data-i18n="projects.cnnCopy">Built a full machine learning pipeline with preprocessing, mathematical modeling, statistical evaluation, and GPU acceleration, achieving 99.26% classification accuracy.</p>
+          <div class="chip-row"><span class="chip">Python</span><span class="chip">TensorFlow</span><span class="chip">CNN</span><span class="chip" data-i18n="chip.gpu">GPU acceleration</span></div>
+          <div class="link-row"><a class="text-link" href="https://github.com/venilkukadiya52/Convolutional-Neural-Network-CNN-model-using-Python" target="_blank" rel="noreferrer" data-i18n="link.githubProject">GitHub project</a></div>
+        </article>
+        <article class="card project-card reveal">
+          <span class="project-type" data-i18n="projects.typeWebApp">Full-stack web application</span>
+          <h3 data-i18n="projects.matrimonialTitle">Matrimonial Platform in ASP.NET</h3>
+          <p data-i18n="projects.matrimonialCopy">Built a Web Forms application with SQL Server-backed registration, OTP email verification, login sessions, profile management, interest requests, premium membership flow, feedback, and admin screens for users and premium accounts.</p>
+          <div class="chip-row"><span class="chip">ASP.NET</span><span class="chip">C#</span><span class="chip">SQL Server</span><span class="chip">JavaScript</span></div>
+          <div class="link-row"><a class="text-link" href="https://github.com/venilkukadiya52/Matrimonial-site-using-ASP.net-and-JavaScript" target="_blank" rel="noreferrer" data-i18n="link.githubProject">GitHub project</a></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="education">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow" data-i18n="education.eyebrow">Education and languages</p>
+          <h2 data-i18n="education.title">Academic depth with practical application.</h2>
+        </div>
+      </div>
+      <div class="education-grid">
+        <article class="card education-card reveal">
+          <p class="date" data-i18n="education.mscDate">2023 to present</p>
+          <h3 data-i18n="education.mscTitle">MSc Data and Computer Science</h3>
+          <p><a class="text-link" href="https://www.uni-heidelberg.de/en" target="_blank" rel="noreferrer">Heidelberg University</a></p>
+          <div class="chip-row"><span class="chip" data-i18n="chip.stats">Statistical analysis</span><span class="chip" data-i18n="chip.ml">Machine learning</span><span class="chip" data-i18n="chip.math">Mathematical modeling</span><span class="chip" data-i18n="chip.dataMining">Data mining</span><span class="chip" data-i18n="chip.database">Database systems</span></div>
+        </article>
+        <article class="card education-card reveal">
+          <p class="date" data-i18n="education.bscDate">2019 to 2022</p>
+          <h3 data-i18n="education.bscTitle">BSc Information Technology</h3>
+          <p><a class="text-link" href="https://utu.ac.in/" target="_blank" rel="noreferrer">Uka Tarsadiya University</a></p>
+          <div class="chip-row"><span class="chip" data-i18n="chip.mathShort">Mathematics</span><span class="chip" data-i18n="chip.statsShort">Statistics</span><span class="chip" data-i18n="chip.algorithms">Algorithms</span><span class="chip" data-i18n="chip.dataAnalysis">Data analysis</span><span class="chip">Python</span><span class="chip">Java</span></div>
+        </article>
+      </div>
+      <div class="language-grid">
+        <article class="card language-card reveal"><h3 data-i18n="language.english">English</h3><p data-i18n="language.englishCopy">Professional communication, documentation, and collaboration.</p><span class="level" data-i18n="language.fluent">Fluent</span></article>
+        <article class="card language-card reveal"><h3 data-i18n="language.german">German</h3><p data-i18n="language.germanCopy">Actively improving for local collaboration in Germany.</p><span class="level">B1-B2</span></article>
+        <article class="card language-card reveal"><h3 data-i18n="language.hindi">Hindi</h3><p data-i18n="language.hindiCopy">Native language for everyday and professional communication.</p><span class="level" data-i18n="language.native">Native</span></article>
+      </div>
+    </section>
+
+    <section class="section" id="certifications">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow" data-i18n="cert.eyebrow">Certifications</p>
+          <h2 data-i18n="cert.title">Verified learning credentials.</h2>
+        </div>
+        <p class="section-copy" data-i18n="cert.copy">The certificate links from the resume are available here for quick review.</p>
+      </div>
+      <div class="cert-grid">
+        <article class="card cert-card reveal"><h3 data-i18n="cert.powerData">Harnessing the Power of Data with Power BI</h3><p data-i18n="cert.powerDataCopy">Verified Power BI learning credential.</p><div class="link-row"><a class="text-link" href="https://coursera.org/share/3aeb963589865b18e72cc974a4369bea" target="_blank" rel="noreferrer" data-i18n="link.openCert">Open certificate</a></div></article>
+        <article class="card cert-card reveal"><h3 data-i18n="cert.etlPowerBi">Extract, Transform and Load Data in Power BI</h3><p data-i18n="cert.etlPowerBiCopy">ETL and Power BI preparation credential.</p><div class="link-row"><a class="text-link" href="https://coursera.org/share/86b6955378f3b5f98421e451457aada9" target="_blank" rel="noreferrer" data-i18n="link.openCert">Open certificate</a></div></article>
+        <article class="card cert-card reveal"><h3 data-i18n="cert.excel">Preparing Data for Analysis with Microsoft Excel</h3><p data-i18n="cert.excelCopy">Microsoft Excel data preparation credential.</p><div class="link-row"><a class="text-link" href="https://www.coursera.org/account/accomplishments/verify/9PIB3EEY4THH" target="_blank" rel="noreferrer" data-i18n="link.openCert">Open certificate</a></div></article>
+        <article class="card cert-card reveal"><h3 data-i18n="cert.pwc">PwC Power BI Virtual Internship Certificate</h3><p data-i18n="cert.pwcCopy">Forage completion certificate for Power BI virtual internship work.</p><div class="link-row"><a class="text-link" href="https://forage-uploads-prod.s3.amazonaws.com/completion-certificates/4sLyCPgmsy8DA6Dh3/a87GpgE6tiku7q3gu_4sLyCPgmsy8DA6Dh3_DNqu7tnfcESTBMRcZ_1741631720033_completion_certificate.pdf" target="_blank" rel="noreferrer" data-i18n="link.openCert">Open certificate</a></div></article>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow" data-i18n="contact.eyebrow">Contact</p>
+          <h2 data-i18n="contact.title">Open to data and software opportunities.</h2>
+        </div>
+        <p class="section-copy" data-i18n="contact.copy">I am especially interested in power systems, energy analytics, data infrastructure, and decision-support dashboards.</p>
+      </div>
+      <div class="contact-wrap">
+        <div class="panel contact-visual reveal"><div class="avatar">VK</div></div>
+        <div class="contact-grid">
+          <a class="card contact-card reveal" href="mailto:venilkukadiya52wr@gmail.com"><h3 data-i18n="contact.email">Email</h3><p>venilkukadiya52wr@gmail.com</p></a>
+          <a class="card contact-card reveal" href="tel:+49017616285002"><h3 data-i18n="contact.phone">Phone</h3><p>+49 017616285002</p></a>
+          <a class="card contact-card reveal" href="https://www.linkedin.com/in/venil-kukadiya502/" target="_blank" rel="noreferrer"><h3>LinkedIn</h3><p>linkedin.com/in/venil-kukadiya502</p></a>
+          <a class="card contact-card reveal" href="https://github.com/venilkukadiya52" target="_blank" rel="noreferrer"><h3>GitHub</h3><p>github.com/venilkukadiya52</p></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span data-i18n="footer.left">© 2026 Venil Kukadiya. Built as a single-file portfolio.</span>
+    <span data-i18n="footer.right">MSc Data and Computer Science · analytics engineering · scalable infrastructure</span>
+  </footer>
+
+  <script>
+    const translations = {
+      en: {
+        "nav.profile": "Profile",
+        "nav.skills": "Skills",
+        "nav.experience": "Experience",
+        "nav.projects": "Projects",
+        "nav.education": "Education",
+        "nav.contact": "Contact",
+        "nav.lang": "Deutsch",
+        "hero.eyebrow": "MSc Data and Computer Science",
+        "hero.lede": "MSc Data and Computer Science at Heidelberg University, focused on analytics pipelines, forecasting models, Power BI dashboards, and scalable data infrastructure for operational decision-making.",
+        "hero.location": "Sandhausen, Germany",
+        "hero.role": "MSc Data and Computer Science",
+        "hero.languages": "English · German B1-B2 · Hindi",
+        "hero.ctaProjects": "Explore projects",
+        "hero.ctaEmail": "Email me",
+        "architecture.eyebrow": "Interactive 3D structure",
+        "architecture.title": "Explore the analytics system",
+        "architecture.copy": "Click a module to see how my resume skills connect across data ingestion, processing, modeling, and decision dashboards.",
+        "architecture.status": "Live",
+        "architecture.nodeCore": "Data Core",
+        "architecture.nodeCoreSub": "Databricks · SQL",
+        "architecture.nodeIngest": "Ingestion",
+        "architecture.nodeIngestSub": "ETL · migration",
+        "architecture.nodeModel": "Modeling",
+        "architecture.nodeModelSub": "ML · forecasting",
+        "architecture.nodeDashboard": "Dashboards",
+        "architecture.nodeDashboardSub": "Power BI · KPI",
+        "architecture.nodeAutomation": "Automation",
+        "architecture.nodeAutomationSub": "PySpark · Azure",
+        "stats.records": "records visualized in dashboard projects",
+        "stats.reporting": "faster report generation for stakeholders",
+        "stats.automation": "less manual processing through ETL automation",
+        "stats.accuracy": "CNN image classification accuracy",
+        "profile.eyebrow": "Profile",
+        "profile.title": "Analytics engineering for data-driven decisions.",
+        "profile.copy": "I turn large, complex datasets into reliable pipelines, statistical insight, and decision-ready dashboards for business and technical teams.",
+        "profile.text": "MSc Data and Computer Science at Heidelberg University. Experienced in processing and analyzing large datasets, building data-driven models for evaluation and forecasting, and creating interactive dashboards with Databricks, PySpark, Python, SQL, and Microsoft Power BI. Interested in energy supply, high-voltage grid analytics, digitalization, and asset management.",
+        "profile.focusTitle": "Core focus areas",
+        "focus.engineeringTitle": "Data engineering",
+        "focus.engineering": "ETL design, PySpark, Databricks, migration, scalable data infrastructure, and documentation.",
+        "focus.analyticsTitle": "Analytics modeling",
+        "focus.analytics": "Statistical analysis, mathematical modeling, forecasting, EDA, A/B testing, and predictive modeling.",
+        "focus.visualTitle": "Visualization",
+        "focus.visual": "Power BI, Streamlit, KPI development, dashboards, and communicating complex relationships clearly.",
+        "focus.cloudTitle": "Cloud and databases",
+        "focus.cloud": "Azure, AWS, MySQL, PostgreSQL, MongoDB, Azure SQL, SQL, and data integration.",
+        "skills.eyebrow": "Skills",
+        "skills.title": "A practical stack for analytics delivery.",
+        "skills.copy": "Skills are grouped by how they contribute to a production analytics workflow: moving data, modeling it, and communicating results.",
+        "skill.dataEngineering": "Data engineering",
+        "skill.analytics": "Analytics and modeling",
+        "skill.visualization": "Visualization",
+        "skill.cloud": "Cloud and databases",
+        "skill.programming": "Programming",
+        "skill.teaming": "Documentation and teamwork",
+        "chip.etl": "ETL pipeline design",
+        "chip.bigData": "Big data processing",
+        "chip.migration": "Data migration",
+        "chip.documentation": "Documentation",
+        "chip.stats": "Statistical analysis",
+        "chip.math": "Mathematical modeling",
+        "chip.forecasting": "Forecasting",
+        "chip.ml": "Machine learning",
+        "chip.predictive": "Predictive modeling",
+        "chip.dashboards": "Interactive dashboards",
+        "chip.kpi": "KPI development",
+        "chip.dataViz": "Data visualization",
+        "chip.processDoc": "Process documentation",
+        "chip.requirements": "Requirements gathering",
+        "chip.validation": "Validation",
+        "chip.maintainability": "Maintainability",
+        "chip.interdisciplinary": "Interdisciplinary teams",
+        "chip.algorithms": "Algorithms",
+        "chip.gpu": "GPU acceleration",
+        "chip.dataMining": "Data mining",
+        "chip.database": "Database systems",
+        "chip.mathShort": "Mathematics",
+        "chip.statsShort": "Statistics",
+        "chip.dataAnalysis": "Data analysis",
+        "experience.eyebrow": "Experience",
+        "experience.title": "Work that connects data, software, and decisions.",
+        "experience.role1": "Data Analyst and Software Developer",
+        "experience.date1": "Jun 2022 to Mar 2023",
+        "experience.bullet1a": "Analyzed and processed large datasets from multiple internal and external sources using Python, PySpark, and SQL, building models for evaluation and forecasting.",
+        "experience.bullet1b": "Developed interactive Power BI dashboards that supported operational and strategic decision-making, reducing report generation time by 60%.",
+        "experience.bullet1c": "Automated and documented ETL pipelines on Databricks and Azure, improving maintainability and reducing manual processing effort by approximately 35%.",
+        "experience.bullet1d": "Standardized decentralized data sources into scalable infrastructure, cutting redundancy by 40% and improving reliable data availability.",
+        "experience.bullet1e": "Worked with interdisciplinary teams to validate results, gather requirements, and contribute digitalization and automation solutions.",
+        "experience.role2": "Junior Software Developer Intern",
+        "experience.date2": "Nov 2021 to May 2022",
+        "experience.bullet2a": "Developed applications using JavaScript, PHP, and MySQL while supporting data pipeline automation and process documentation.",
+        "experience.bullet2b": "Analyzed large datasets with SQL and contributed to workflow automation, saving approximately 5 hours of manual processing effort per week.",
+        "projects.eyebrow": "Projects",
+        "projects.title": "Selected analytics and engineering work.",
+        "projects.copy": "Project links from the resume and recent GitHub work are preserved and grouped by outcome.",
+        "projects.typeMedicalAi": "Medical AI · university project",
+        "projects.mriTitle": "MRI Brain Tumor Detection",
+        "projects.mriCopy": "Collaborative university project for detecting brain tumor regions in MRI images. The repository is structured around a Faster R-CNN pipeline with an EfficientNet-B3 feature pyramid backbone, Pascal VOC style annotations, EDA, evaluation, inference, and a Gradio demo interface.",
+        "projects.typeDashboard": "Dashboard suite",
+        "projects.powerTitle": "Power BI analytics dashboards",
+        "projects.powerCopy": "Built interactive dashboards across 500,000 plus records, supporting operational and strategic decisions through statistical analysis, standardized data sources, and clear KPI reporting.",
+        "projects.typeCompute": "Parallel computing",
+        "projects.bfsTitle": "BFS acceleration with UPMEM Processing-In-Memory",
+        "projects.bfsCopy": "Developed a big data processing solution using parallel computation on UPMEM DPUs, demonstrating scalable infrastructure and optimization of complex algorithms for large datasets.",
+        "projects.typeHardware": "Embedded hardware",
+        "projects.fpgaTitle": "FPGA-Based System with Xilinx Vitis",
+        "projects.fpgaCopy": "Designed and benchmarked a MicroBlaze-based FPGA platform using Xilinx/Vitis tools. The project compares polled and interrupt-driven UART I/O, expands the system with AXI crossbar, AXI timer, DDR3 memory, cache, and computational kernel timing.",
+        "projects.typeML": "Machine learning",
+        "projects.cnnTitle": "CNN image classification model",
+        "projects.cnnCopy": "Built a full machine learning pipeline with preprocessing, mathematical modeling, statistical evaluation, and GPU acceleration, achieving 99.26% classification accuracy.",
+        "projects.typeWebApp": "Full-stack web application",
+        "projects.matrimonialTitle": "Matrimonial Platform in ASP.NET",
+        "projects.matrimonialCopy": "Built a Web Forms application with SQL Server-backed registration, OTP email verification, login sessions, profile management, interest requests, premium membership flow, feedback, and admin screens for users and premium accounts.",
+        "link.githubProject": "GitHub project",
+        "education.eyebrow": "Education and languages",
+        "education.title": "Academic depth with practical application.",
+        "education.mscDate": "2023 to present",
+        "education.mscTitle": "MSc Data and Computer Science",
+        "education.bscDate": "2019 to 2022",
+        "education.bscTitle": "BSc Information Technology",
+        "language.english": "English",
+        "language.englishCopy": "Professional communication, documentation, and collaboration.",
+        "language.fluent": "Fluent",
+        "language.german": "German",
+        "language.germanCopy": "Actively improving for local collaboration in Germany.",
+        "language.hindi": "Hindi",
+        "language.hindiCopy": "Native language for everyday and professional communication.",
+        "language.native": "Native",
+        "cert.eyebrow": "Certifications",
+        "cert.title": "Verified learning credentials.",
+        "cert.copy": "The certificate links from the resume are available here for quick review.",
+        "cert.powerData": "Harnessing the Power of Data with Power BI",
+        "cert.powerDataCopy": "Verified Power BI learning credential.",
+        "cert.etlPowerBi": "Extract, Transform and Load Data in Power BI",
+        "cert.etlPowerBiCopy": "ETL and Power BI preparation credential.",
+        "cert.excel": "Preparing Data for Analysis with Microsoft Excel",
+        "cert.excelCopy": "Microsoft Excel data preparation credential.",
+        "cert.pwc": "PwC Power BI Virtual Internship Certificate",
+        "cert.pwcCopy": "Forage completion certificate for Power BI virtual internship work.",
+        "link.openCert": "Open certificate",
+        "contact.eyebrow": "Contact",
+        "contact.title": "Open to data and software opportunities.",
+        "contact.copy": "I am especially interested in power systems, energy analytics, data infrastructure, and decision-support dashboards.",
+        "contact.email": "Email",
+        "contact.phone": "Phone",
+        "footer.left": "© 2026 Venil Kukadiya. Built as a single-file portfolio.",
+        "footer.right": "MSc Data and Computer Science · analytics engineering · scalable infrastructure"
+      },
+      de: {
+        "nav.profile": "Profil",
+        "nav.skills": "Skills",
+        "nav.experience": "Erfahrung",
+        "nav.projects": "Projekte",
+        "nav.education": "Bildung",
+        "nav.contact": "Kontakt",
+        "nav.lang": "English",
+        "hero.eyebrow": "MSc Data and Computer Science",
+        "hero.lede": "MSc Data and Computer Science an der Universität Heidelberg mit Fokus auf Analytics-Pipelines, Prognosemodelle, Power-BI-Dashboards und skalierbare Dateninfrastruktur für operative Entscheidungen.",
+        "hero.location": "Sandhausen, Deutschland",
+        "hero.role": "MSc Data and Computer Science",
+        "hero.languages": "Englisch · Deutsch B1-B2 · Hindi",
+        "hero.ctaProjects": "Projekte ansehen",
+        "hero.ctaEmail": "E-Mail senden",
+        "architecture.eyebrow": "Interaktive 3D-Struktur",
+        "architecture.title": "Analytics-System erkunden",
+        "architecture.copy": "Klicken Sie auf ein Modul, um zu sehen, wie meine Fähigkeiten aus dem Lebenslauf Datenaufnahme, Verarbeitung, Modellierung und Entscheidungs-Dashboards verbinden.",
+        "architecture.status": "Live",
+        "architecture.nodeCore": "Datenkern",
+        "architecture.nodeCoreSub": "Databricks · SQL",
+        "architecture.nodeIngest": "Datenaufnahme",
+        "architecture.nodeIngestSub": "ETL · Migration",
+        "architecture.nodeModel": "Modellierung",
+        "architecture.nodeModelSub": "ML · Prognosen",
+        "architecture.nodeDashboard": "Dashboards",
+        "architecture.nodeDashboardSub": "Power BI · KPI",
+        "architecture.nodeAutomation": "Automatisierung",
+        "architecture.nodeAutomationSub": "PySpark · Azure",
+        "stats.records": "Datensätze in Dashboard-Projekten visualisiert",
+        "stats.reporting": "schnellere Berichtserstellung für Stakeholder",
+        "stats.automation": "weniger manuelle Verarbeitung durch ETL-Automatisierung",
+        "stats.accuracy": "Klassifikationsgenauigkeit des CNN-Modells",
+        "profile.eyebrow": "Profil",
+        "profile.title": "Analytics Engineering für datenbasierte Entscheidungen.",
+        "profile.copy": "Ich verwandle große, komplexe Datensätze in zuverlässige Pipelines, statistische Erkenntnisse und entscheidungsreife Dashboards für Business- und Technikteams.",
+        "profile.text": "MSc Data and Computer Science an der Universität Heidelberg. Erfahren in der Verarbeitung und Analyse großer Datensätze, im Aufbau datengetriebener Modelle für Bewertung und Prognosen sowie in interaktiven Dashboards mit Databricks, PySpark, Python, SQL und Microsoft Power BI. Besonders interessiert an Energieversorgung, Hochspannungsnetz-Analytics, Digitalisierung und Asset Management.",
+        "profile.focusTitle": "Schwerpunkte",
+        "focus.engineeringTitle": "Data Engineering",
+        "focus.engineering": "ETL-Design, PySpark, Databricks, Migration, skalierbare Dateninfrastruktur und Dokumentation.",
+        "focus.analyticsTitle": "Analytics-Modellierung",
+        "focus.analytics": "Statistische Analyse, mathematische Modellierung, Prognosen, EDA, A/B-Tests und prädiktive Modellierung.",
+        "focus.visualTitle": "Visualisierung",
+        "focus.visual": "Power BI, Streamlit, KPI-Entwicklung, Dashboards und klare Kommunikation komplexer Zusammenhänge.",
+        "focus.cloudTitle": "Cloud und Datenbanken",
+        "focus.cloud": "Azure, AWS, MySQL, PostgreSQL, MongoDB, Azure SQL, SQL und Datenintegration.",
+        "skills.eyebrow": "Skills",
+        "skills.title": "Ein praxisnaher Stack für Analytics Delivery.",
+        "skills.copy": "Die Fähigkeiten sind danach gruppiert, wie sie zu einem produktiven Analytics-Workflow beitragen: Daten bewegen, modellieren und Ergebnisse kommunizieren.",
+        "skill.dataEngineering": "Data Engineering",
+        "skill.analytics": "Analytics und Modellierung",
+        "skill.visualization": "Visualisierung",
+        "skill.cloud": "Cloud und Datenbanken",
+        "skill.programming": "Programmierung",
+        "skill.teaming": "Dokumentation und Teamarbeit",
+        "chip.etl": "ETL-Pipeline-Design",
+        "chip.bigData": "Big-Data-Verarbeitung",
+        "chip.migration": "Datenmigration",
+        "chip.documentation": "Dokumentation",
+        "chip.stats": "Statistische Analyse",
+        "chip.math": "Mathematische Modellierung",
+        "chip.forecasting": "Prognosen",
+        "chip.ml": "Maschinelles Lernen",
+        "chip.predictive": "Prädiktive Modellierung",
+        "chip.dashboards": "Interaktive Dashboards",
+        "chip.kpi": "KPI-Entwicklung",
+        "chip.dataViz": "Datenvisualisierung",
+        "chip.processDoc": "Prozessdokumentation",
+        "chip.requirements": "Anforderungsanalyse",
+        "chip.validation": "Validierung",
+        "chip.maintainability": "Wartbarkeit",
+        "chip.interdisciplinary": "Interdisziplinäre Teams",
+        "chip.algorithms": "Algorithmen",
+        "chip.gpu": "GPU-Beschleunigung",
+        "chip.dataMining": "Data Mining",
+        "chip.database": "Datenbanksysteme",
+        "chip.mathShort": "Mathematik",
+        "chip.statsShort": "Statistik",
+        "chip.dataAnalysis": "Datenanalyse",
+        "experience.eyebrow": "Erfahrung",
+        "experience.title": "Arbeit, die Daten, Software und Entscheidungen verbindet.",
+        "experience.role1": "Data Analyst und Softwareentwickler",
+        "experience.date1": "Juni 2022 bis März 2023",
+        "experience.bullet1a": "Analyse und Verarbeitung großer Datensätze aus internen und externen Quellen mit Python, PySpark und SQL; Aufbau von Modellen für Bewertung und Prognosen.",
+        "experience.bullet1b": "Entwicklung interaktiver Power-BI-Dashboards zur Unterstützung operativer und strategischer Entscheidungen; Berichtserstellung um 60% beschleunigt.",
+        "experience.bullet1c": "Automatisierung und Dokumentation von ETL-Pipelines auf Databricks und Azure; Wartbarkeit verbessert und manuellen Aufwand um etwa 35% reduziert.",
+        "experience.bullet1d": "Standardisierung dezentraler Datenquellen zu skalierbarer Infrastruktur; Redundanz um 40% reduziert und zuverlässige Datenverfügbarkeit verbessert.",
+        "experience.bullet1e": "Zusammenarbeit mit interdisziplinären Teams zur Validierung von Ergebnissen, Aufnahme von Anforderungen und Umsetzung von Digitalisierungs- und Automatisierungslösungen.",
+        "experience.role2": "Junior Software Developer Praktikant",
+        "experience.date2": "Nov. 2021 bis Mai 2022",
+        "experience.bullet2a": "Entwicklung von Anwendungen mit JavaScript, PHP und MySQL sowie Unterstützung bei Datenpipeline-Automatisierung und Prozessdokumentation.",
+        "experience.bullet2b": "Analyse großer Datensätze mit SQL und Beitrag zur Workflow-Automatisierung; etwa 5 Stunden manuellen Aufwand pro Woche eingespart.",
+        "projects.eyebrow": "Projekte",
+        "projects.title": "Ausgewählte Analytics- und Engineering-Arbeiten.",
+        "projects.copy": "Projektlinks aus dem Lebenslauf und aktuelle GitHub-Arbeiten bleiben erhalten und sind nach Ergebnis gruppiert.",
+        "projects.typeMedicalAi": "Medical AI · Universitätsprojekt",
+        "projects.mriTitle": "MRI Brain Tumor Detection",
+        "projects.mriCopy": "Gemeinsames Universitätsprojekt zur Erkennung von Tumorregionen in MRT-Bildern. Das Repository ist als Faster-R-CNN-Pipeline mit EfficientNet-B3-Feature-Pyramid-Backbone, Pascal-VOC-Annotationen, EDA, Evaluation, Inferenz und Gradio-Demo aufgebaut.",
+        "projects.typeDashboard": "Dashboard-Suite",
+        "projects.powerTitle": "Power-BI-Analytics-Dashboards",
+        "projects.powerCopy": "Interaktive Dashboards über mehr als 500.000 Datensätze erstellt, die operative und strategische Entscheidungen durch statistische Analyse, standardisierte Datenquellen und klares KPI-Reporting unterstützen.",
+        "projects.typeCompute": "Paralleles Rechnen",
+        "projects.bfsTitle": "BFS-Beschleunigung mit UPMEM Processing-In-Memory",
+        "projects.bfsCopy": "Big-Data-Verarbeitungslösung mit paralleler Berechnung auf UPMEM-DPUs entwickelt und skalierbare Infrastruktur sowie Optimierung komplexer Algorithmen für große Datensätze demonstriert.",
+        "projects.typeHardware": "Embedded Hardware",
+        "projects.fpgaTitle": "FPGA-Based System mit Xilinx Vitis",
+        "projects.fpgaCopy": "MicroBlaze-basierte FPGA-Plattform mit Xilinx/Vitis entworfen und gemessen. Das Projekt vergleicht polled und interrupt-gesteuerte UART-I/O, erweitert das System mit AXI-Crossbar, AXI-Timer, DDR3-Speicher, Cache und Timing für Rechenkerne.",
+        "projects.typeML": "Maschinelles Lernen",
+        "projects.cnnTitle": "CNN-Modell für Bildklassifikation",
+        "projects.cnnCopy": "Vollständige Machine-Learning-Pipeline mit Vorverarbeitung, mathematischer Modellierung, statistischer Bewertung und GPU-Beschleunigung aufgebaut; 99,26% Klassifikationsgenauigkeit erreicht.",
+        "projects.typeWebApp": "Full-Stack-Webanwendung",
+        "projects.matrimonialTitle": "Matrimonial-Plattform in ASP.NET",
+        "projects.matrimonialCopy": "Web-Forms-Anwendung mit SQL-Server-gestützter Registrierung, OTP-E-Mail-Verifizierung, Login-Sessions, Profilverwaltung, Interessensanfragen, Premium-Mitgliedschaftsfluss, Feedback und Admin-Ansichten für Nutzer und Premium-Konten gebaut.",
+        "link.githubProject": "GitHub-Projekt",
+        "education.eyebrow": "Bildung und Sprachen",
+        "education.title": "Akademische Tiefe mit praktischer Anwendung.",
+        "education.mscDate": "2023 bis heute",
+        "education.mscTitle": "MSc Data and Computer Science",
+        "education.bscDate": "2019 bis 2022",
+        "education.bscTitle": "BSc Information Technology",
+        "language.english": "Englisch",
+        "language.englishCopy": "Professionelle Kommunikation, Dokumentation und Zusammenarbeit.",
+        "language.fluent": "Fließend",
+        "language.german": "Deutsch",
+        "language.germanCopy": "Aktive Verbesserung für lokale Zusammenarbeit in Deutschland.",
+        "language.hindi": "Hindi",
+        "language.hindiCopy": "Muttersprache für alltägliche und professionelle Kommunikation.",
+        "language.native": "Muttersprache",
+        "cert.eyebrow": "Zertifikate",
+        "cert.title": "Verifizierte Lernnachweise.",
+        "cert.copy": "Die Zertifikatslinks aus dem Lebenslauf sind hier für eine schnelle Prüfung verfügbar.",
+        "cert.powerData": "Harnessing the Power of Data with Power BI",
+        "cert.powerDataCopy": "Verifizierter Power-BI-Lernnachweis.",
+        "cert.etlPowerBi": "Extract, Transform and Load Data in Power BI",
+        "cert.etlPowerBiCopy": "Nachweis zu ETL und Datenaufbereitung in Power BI.",
+        "cert.excel": "Preparing Data for Analysis with Microsoft Excel",
+        "cert.excelCopy": "Nachweis zur Datenaufbereitung mit Microsoft Excel.",
+        "cert.pwc": "PwC Power BI Virtual Internship Certificate",
+        "cert.pwcCopy": "Forage-Abschlusszertifikat für die virtuelle Power-BI-Praktikumsarbeit.",
+        "link.openCert": "Zertifikat öffnen",
+        "contact.eyebrow": "Kontakt",
+        "contact.title": "Offen für Data- und Software-Möglichkeiten.",
+        "contact.copy": "Ich interessiere mich besonders für Energiesysteme, Energy Analytics, Dateninfrastruktur und entscheidungsunterstützende Dashboards.",
+        "contact.email": "E-Mail",
+        "contact.phone": "Telefon",
+        "footer.left": "© 2026 Venil Kukadiya. Erstellt als Single-File-Portfolio.",
+        "footer.right": "MSc Data and Computer Science · Analytics Engineering · skalierbare Infrastruktur"
+      }
+    };
+
+    const insights = {
+      en: {
+        core: ["Data Core", "Databricks, PySpark, Python, and SQL connect the portfolio: scalable pipelines, clean datasets, and reliable reporting foundations.", "01"],
+        ingest: ["Ingestion", "ETL design and data migration standardize scattered data sources before analysis and reporting.", "02"],
+        model: ["Modeling", "Statistical analysis, forecasting, machine learning, and mathematical modeling turn raw data into explainable decisions.", "03"],
+        dashboard: ["Dashboards", "Power BI, Streamlit, KPI development, and clear visualization make complex relationships usable for stakeholders.", "04"],
+        automation: ["Automation", "Python, PySpark, Azure, and documentation reduce manual effort and keep analytics workflows maintainable.", "05"]
+      },
+      de: {
+        core: ["Datenkern", "Databricks, PySpark, Python und SQL verbinden das Portfolio: skalierbare Pipelines, saubere Datensätze und zuverlässige Reporting-Grundlagen.", "01"],
+        ingest: ["Datenaufnahme", "ETL-Design und Datenmigration standardisieren verteilte Datenquellen vor Analyse und Reporting.", "02"],
+        model: ["Modellierung", "Statistische Analyse, Prognosen, maschinelles Lernen und mathematische Modellierung machen aus Rohdaten erklärbare Entscheidungen.", "03"],
+        dashboard: ["Dashboards", "Power BI, Streamlit, KPI-Entwicklung und klare Visualisierung machen komplexe Zusammenhänge für Stakeholder nutzbar.", "04"],
+        automation: ["Automatisierung", "Python, PySpark, Azure und Dokumentation reduzieren manuellen Aufwand und halten Analytics-Workflows wartbar.", "05"]
+      }
+    };
+
+    let currentLanguage = localStorage.getItem("portfolio-language") || "en";
+    let activeNode = "core";
+
+    const loader = document.querySelector(".loader");
+    window.setTimeout(() => loader.classList.add("is-hidden"), 2000);
+    window.setTimeout(() => loader.remove(), 2800);
+
+    function applyLanguage(language) {
+      currentLanguage = language;
+      const dict = translations[language];
+      document.documentElement.lang = language;
+      document.title = language === "de" ? "Venil Kukadiya | Data-Analytics-Portfolio" : "Venil Kukadiya | Data Analytics Portfolio";
+      document.querySelectorAll("[data-i18n]").forEach((element) => {
+        const key = element.dataset.i18n;
+        if (dict[key]) element.textContent = dict[key];
+      });
+      document.querySelector(".lang-short").textContent = language === "de" ? "EN" : "DE";
+      document.getElementById("languageToggle").setAttribute("aria-pressed", String(language === "de"));
+      localStorage.setItem("portfolio-language", language);
+      updateInsight(activeNode);
+    }
+
+    function updateInsight(node) {
+      activeNode = node;
+      document.querySelectorAll(".module, .explore-chip").forEach((element) => {
+        element.classList.toggle("is-active", element.dataset.node === node);
+      });
+      const [title, body, count] = insights[currentLanguage][node];
+      document.getElementById("insightTitle").textContent = title;
+      document.getElementById("insightBody").textContent = body;
+      document.getElementById("insightCount").textContent = count;
+    }
+
+    document.getElementById("languageToggle").addEventListener("click", () => {
+      applyLanguage(currentLanguage === "en" ? "de" : "en");
+    });
+
+    document.querySelectorAll(".module, .explore-chip").forEach((module) => {
+      module.addEventListener("click", () => updateInsight(module.dataset.node));
+    });
+
+    const architectureCard = document.getElementById("architectureCard");
+    const architectureStage = document.getElementById("architectureStage");
+    architectureCard.addEventListener("mousemove", (event) => {
+      if (window.innerWidth < 740) return;
+      const rect = architectureCard.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+      architectureStage.style.transform = `translate3d(${x * 10}px, ${y * 8}px, 0)`;
+    });
+    architectureCard.addEventListener("mouseleave", () => {
+      architectureStage.style.transform = "";
+    });
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        revealObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
+    window.setTimeout(() => {
+      document.querySelectorAll(".reveal").forEach((element) => element.classList.add("is-visible"));
+    }, 1800);
+
+    const skillObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const bar = entry.target.querySelector(".bar span");
+        bar.style.width = `${entry.target.dataset.progress}%`;
+        skillObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.28 });
+
+    document.querySelectorAll(".skill-card").forEach((card) => skillObserver.observe(card));
+
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        document.querySelectorAll(".nav-link").forEach((link) => {
+          link.classList.toggle("is-active", link.getAttribute("href") === `#${entry.target.id}`);
+        });
+      });
+    }, { rootMargin: "-48% 0px -46% 0px" });
+
+    document.querySelectorAll("main section[id]").forEach((section) => navObserver.observe(section));
+
+    const canvas = document.getElementById("bgCanvas");
+    const ctx = canvas.getContext("2d");
+    const points = [];
+    let width = 0;
+    let height = 0;
+    let ratio = 1;
+
+    function resizeCanvas() {
+      ratio = Math.min(window.devicePixelRatio || 1, 2);
+      width = canvas.clientWidth;
+      height = canvas.clientHeight;
+      canvas.width = Math.floor(width * ratio);
+      canvas.height = Math.floor(height * ratio);
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      seedPoints();
+    }
+
+    function seedPoints() {
+      points.length = 0;
+      const total = Math.min(72, Math.max(34, Math.floor((width * height) / 23000)));
+      for (let index = 0; index < total; index += 1) {
+        points.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.32,
+          vy: (Math.random() - 0.5) * 0.32,
+          r: Math.random() * 1.5 + 0.8
+        });
+      }
+    }
+
+    function drawCanvas() {
+      ctx.clearRect(0, 0, width, height);
+      for (let i = 0; i < points.length; i += 1) {
+        const p = points[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > width) p.vx *= -1;
+        if (p.y < 0 || p.y > height) p.vy *= -1;
+        ctx.beginPath();
+        ctx.fillStyle = "rgba(34, 211, 238, 0.55)";
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+        for (let j = i + 1; j < points.length; j += 1) {
+          const q = points[j];
+          const distance = Math.hypot(p.x - q.x, p.y - q.y);
+          if (distance < 126) {
+            ctx.strokeStyle = `rgba(148, 163, 184, ${(1 - distance / 126) * 0.14})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(q.x, q.y);
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(drawCanvas);
+    }
+
+    resizeCanvas();
+    drawCanvas();
+    window.addEventListener("resize", resizeCanvas);
+    applyLanguage(currentLanguage);
+  </script>
+</body>
+</html>
